@@ -36,9 +36,12 @@ func (br BookRepository) BookGetAll() ([]models.Book, error) {
 }
 
 func (br BookRepository) BookGet(id int16) (models.Book, error) {
-	var book models.Book
+	result, err := br.Repository.Get(id)
+	if err != nil {
+		return result, err
+	}
 
-	return book, nil
+	return result, nil
 }
 
 func (br BookRepository) BookUpdate(id int16) (bool, error) {
