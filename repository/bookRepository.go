@@ -75,5 +75,7 @@ func (bdb BookDB) Delete(id int16) error {
 		return result.Error
 	}
 
+	bdb.DB.Delete(&book, id)
+
 	return nil
 }
