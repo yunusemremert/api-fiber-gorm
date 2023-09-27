@@ -22,7 +22,7 @@ func (bs BookService) CreateBook(c *fiber.Ctx) error {
 		})
 	}
 
-	result, err := bs.Service.BookInsert(book)
+	err := bs.Service.BookInsert(book)
 	if err != nil {
 		return c.Status(http.StatusBadGateway).JSON(fiber.Map{
 			"error":   "Service unavailable.",
@@ -32,7 +32,6 @@ func (bs BookService) CreateBook(c *fiber.Ctx) error {
 
 	return c.Status(http.StatusCreated).JSON(fiber.Map{
 		"message": "Book created successfully.",
-		"data":    result,
 	})
 }
 
@@ -52,9 +51,9 @@ func (bs BookService) GetBook(c *fiber.Ctx) error {
 		return crpErr
 	}
 
-	cnvId, crIErr := convertRequestId(c, id)
-	if crIErr != nil {
-		return crIErr
+	cnvId, crIdErr := convertRequestId(c, id)
+	if crIdErr != nil {
+		return crIdErr
 	}
 
 	result, err := bs.Service.BookGet(cnvId)
@@ -63,6 +62,59 @@ func (bs BookService) GetBook(c *fiber.Ctx) error {
 	}
 
 	return c.Status(http.StatusOK).JSON(result)
+}
+
+func (bs BookService) UpdateBook(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	if crpErr := checkRequestId(c, id); crpErr != nil {
+		return crpErr
+	}
+
+	var book models.Book
+
+	if err := c.BodyParser(&book); err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"error":   "Invalid Json.",
+			"message": err.Error(),
+		})
+	}
+
+	cnvId, CrIdErr := convertRequestId(c, id)
+	if CrIdErr != nil {
+		return CrIdErr
+	}
+
+	err := bs.Service.BookUpdate(book, cnvId)
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(err.Error())
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"message": "Book updated successfully.",
+	})
+}
+
+func (bs BookService) DeleteBook(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	if crpErr := checkRequestId(c, id); crpErr != nil {
+		return crpErr
+	}
+
+	cnvId, CrIdErr := convertRequestId(c, id)
+	if CrIdErr != nil {
+		return CrIdErr
+	}
+
+	err := bs.Service.BookDelete(cnvId)
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(err.Error())
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"message": "Book deleted successfully.",
+	})
 }
 
 func checkRequestId(c *fiber.Ctx, id string) error {

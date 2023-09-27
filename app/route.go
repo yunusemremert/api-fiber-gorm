@@ -13,11 +13,13 @@ func SetupRoutes(c *fiber.App) {
 		return c.SendString("Hello, World!")
 	})
 
-	bookController := controllers.BookService{}
+	bc := controllers.BookService{}
 
-	v1.Post("/book", bookController.CreateBook)
-	v1.Get("/book", bookController.GetAllBook)
-	v1.Get("/book/:id", bookController.GetBook)
+	v1.Post("/book", bc.CreateBook)
+	v1.Get("/book", bc.GetAllBook)
+	v1.Get("/book/:id", bc.GetBook)
+	v1.Put("/book/:id", bc.UpdateBook)
+	v1.Delete("/book/:id", bc.DeleteBook)
 
 	/*
 		v2 := route.Group("/v2")

@@ -11,10 +11,10 @@ func EnvPostgreDBUrl() string {
 		log.Println("No .env file found")
 	}
 
-	postgreDBUrl := os.Getenv("POSTGREDB_URL")
-	if postgreDBUrl == "" {
+	pDBUrl := os.Getenv("POSTGREDB_URL")
+	if pDBUrl == "" {
 		log.Fatal("You must set your 'POSTGREDB_URL' environmental variable.")
 	}
 
-	return postgreDBUrl
+	return pDBUrl
 }

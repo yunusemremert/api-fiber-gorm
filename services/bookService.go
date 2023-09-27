@@ -10,20 +10,20 @@ type BookRepository struct {
 }
 
 type BookService interface {
-	BookInsert(book models.Book) (bool, error)
+	BookInsert(book models.Book) error
 	BookGetAll() ([]models.Book, error)
 	BookGet(id int16) (models.Book, error)
-	BookUpdate(id int16) (bool, error)
-	BookDelete(id int16) (bool, error)
+	BookUpdate(book models.Book, id int16) error
+	BookDelete(id int16) error
 }
 
-func (br BookRepository) BookInsert(book models.Book) (bool, error) {
-	result, err := br.Repository.Insert(book)
-	if result == false || err != nil {
-		return false, err
+func (br BookRepository) BookInsert(book models.Book) error {
+	err := br.Repository.Insert(book)
+	if err != nil {
+		return err
 	}
 
-	return true, nil
+	return nil
 }
 
 func (br BookRepository) BookGetAll() ([]models.Book, error) {
@@ -44,10 +44,20 @@ func (br BookRepository) BookGet(id int16) (models.Book, error) {
 	return result, nil
 }
 
-func (br BookRepository) BookUpdate(id int16) (bool, error) {
-	return true, nil
+func (br BookRepository) BookUpdate(book models.Book, id int16) error {
+	err := br.Repository.Update(book, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func (br BookRepository) BookDelete(id int16) (bool, error) {
-	return true, nil
+func (br BookRepository) BookDelete(id int16) error {
+	err := br.Repository.Delete(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
