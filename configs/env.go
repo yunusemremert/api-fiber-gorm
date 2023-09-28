@@ -12,13 +12,15 @@ func EnvPostgreDBUrl() string {
 		log.Println("No .env file found")
 	}
 
+	pDBHost := getEnvVar("POSTGRES_HOST")
 	pDBUser := getEnvVar("POSTGRES_USER")
 	pDBPassword := getEnvVar("POSTGRES_PASSWORD")
 	pDBName := getEnvVar("POSTGRES_DB")
+	pDBPort := getEnvVar("POSTGRES_PORT")
 
 	pDBUrl := fmt.Sprintf(
-		"postgres://%s:%s@localhost:5432/%s?sslmode=disable",
-		pDBUser, pDBPassword, pDBName,
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+		pDBHost, pDBUser, pDBPassword, pDBName, pDBPort,
 	)
 
 	return pDBUrl
