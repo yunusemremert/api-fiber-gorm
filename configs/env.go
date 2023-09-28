@@ -1,6 +1,7 @@
 package configs
 
 import (
+	"fmt"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
@@ -11,10 +12,23 @@ func EnvPostgreDBUrl() string {
 		log.Println("No .env file found")
 	}
 
-	pDBUrl := os.Getenv("POSTGREDB_URL")
-	if pDBUrl == "" {
-		log.Fatal("You must set your 'POSTGREDB_URL' environmental variable.")
-	}
+	pDBUser := getEnvVar("POSTGRES_USER")
+	pDBPassword := getEnvVar("POSTGRES_PASSWORD")
+	pDBName := getEnvVar("POSTGRES_DB")
+
+	pDBUrl := fmt.Sprintf(
+		"postgres://%s:%s@localhost:5432/%s?sslmode=disable",
+		pDBUser, pDBPassword, pDBName,
+	)
 
 	return pDBUrl
+}
+
+func getEnvVar(key string) string {
+	value := os.Getenv(key)
+	if value == "" {
+		log.Fatalf("You must set your '%s' environmental variable.", key)
+	}
+
+	return value
 }
