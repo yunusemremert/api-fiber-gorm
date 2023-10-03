@@ -2,8 +2,9 @@ version: '3.8'
 
 services:
   database:
-    #container_name: go-db
+    container_name: go-db
     image: postgres:16.0-alpine3.18
+    network_mode: bridge
     restart: always
     env_file:
       - .env
@@ -12,7 +13,8 @@ services:
     volumes:
       - data:/var/lib/postgresql/data
   server:
-    #container_name: go-server
+    container_name: go-server
+    network_mode: bridge
     build:
       context: ./
       dockerfile: Dockerfile
@@ -20,9 +22,9 @@ services:
       - .env
     depends_on:
       - database
-    networks:
-      - default
     ports:
       - "3000:3000"
+    links:
+      - database
 volumes:
   data:
