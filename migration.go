@@ -5,7 +5,7 @@ import (
 	"api-fiber-gorm/migrations"
 )
 
-func main() {
+func _main() {
 	dbClient := configs.ConnectPostgreSQL()
 
 	rm := migrations.PostgreDB{DB: dbClient}
