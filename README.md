@@ -19,5 +19,5 @@ docker compose up
 
 4. If you are `dial Tcp 127.0.0.1:5432: If you receive the connect: .... connection refused` error message, type the following command line into the terminal screen and write the `IPAddress` part of the output into the .env file.
 ```
-docker container inspect api-fiber-gorm-database-1
+docker container inspect go-db
 ```
