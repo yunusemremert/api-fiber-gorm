@@ -61,3 +61,7 @@ func (br BookRepository) BookDelete(id int16) error {
 
 	return nil
 }
+
+func NewBookService(repository repository.BookRepository) *BookRepository {
+	return &BookRepository{repository}
+}

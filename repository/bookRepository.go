@@ -79,3 +79,7 @@ func (bdb BookDB) Delete(id int16) error {
 
 	return nil
 }
+
+func NewBookRepositoryDB(dbClient *gorm.DB) *BookDB {
+	return &BookDB{dbClient}
+}

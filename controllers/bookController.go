@@ -12,6 +12,14 @@ type BookService struct {
 	Service services.BookService
 }
 
+type BookController interface {
+	CreateBook(c *fiber.Ctx) error
+	GetAllBook(c *fiber.Ctx) error
+	GetBook(c *fiber.Ctx) error
+	UpdateBook(c *fiber.Ctx) error
+	DeleteBook(c *fiber.Ctx) error
+}
+
 func (bs BookService) CreateBook(c *fiber.Ctx) error {
 	var book models.Book
 
@@ -139,4 +147,8 @@ func convertRequestId(c *fiber.Ctx, id string) (int16, error) {
 	}
 
 	return int16(cnv), nil
+}
+
+func NewBookController(service services.BookService) *BookService {
+	return &BookService{service}
 }

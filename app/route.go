@@ -5,15 +5,13 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetupRoutes(c *fiber.App) {
+func SetupBookRoutes(c *fiber.App, bc controllers.BookController) {
 	route := c.Group("/api")
 
 	v1 := route.Group("/v1")
 	v1.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World!")
 	})
-
-	bc := controllers.BookService{}
 
 	v1.Post("/book", bc.CreateBook)
 	v1.Get("/book", bc.GetAllBook)
@@ -28,3 +26,7 @@ func SetupRoutes(c *fiber.App) {
 		})
 	*/
 }
+
+/*
+func SetupAuthorRoutes(){}
+*/
